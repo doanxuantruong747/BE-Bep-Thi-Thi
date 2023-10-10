@@ -23,13 +23,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   // Login
-  @Public()
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: Login) {
-    console.log('signInDto------------', signInDto);
-    return this.authService.login(signInDto);
-  }
+  // @Public()
+  // @HttpCode(HttpStatus.OK)
+  // @Post('login')
+  // signIn(@Body() signInDto: Login) {
+  //   console.log('signInDto------------', signInDto);
+  //   return this.authService.login(signInDto);
+  // }
 
   @Public()
   @UseInterceptors(FileInterceptor('file'))

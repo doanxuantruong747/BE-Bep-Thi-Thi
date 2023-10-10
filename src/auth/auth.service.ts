@@ -15,15 +15,10 @@ import {
 import { UsersService } from '../users/users.service';
 import { CheckOtp, Login, updateProfile } from 'types';
 import { CreateUserDto } from 'validation/CreateUserDto';
-import { DevicesService } from 'devices/devices.service';
 //private devicesService: DevicesService,
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-    private devicesService: DevicesService,
-  ) {}
+  constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
   // refresh Token
   async refreshToken(refreshToken: string): Promise<User | any> {
@@ -48,31 +43,31 @@ export class AuthService {
     }
   }
 
-  async signIn(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if (user) {
-      const match = bcrypt.compareSync(password, user?.password);
-      if (match) {
-        const payload = { sub: user?.id, email: user?.email };
-        const refresh_token = await genRefreshTokenWithTimestamp();
-        const hashed_refresh_token = await hashRefreshToken(refresh_token);
-        user.accessToken = hashed_refresh_token;
-        await user.save();
-        return resJson({
-          message: 'OK',
-          data: [
-            {
-              role: user?.role?.slug_name,
-              access_token: await this.jwtService.signAsync(payload),
-              refresh_token,
-            },
-          ],
-        });
-      }
-      return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
-    }
-    return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
-  }
+  // async signIn(username: string, password: string): Promise<any> {
+  //   const user = await this.usersService.findOne(username);
+  //   if (user) {
+  //     const match = bcrypt.compareSync(password, user?.password);
+  //     if (match) {
+  //       const payload = { sub: user?.id, email: user?.email };
+  //       const refresh_token = await genRefreshTokenWithTimestamp();
+  //       const hashed_refresh_token = await hashRefreshToken(refresh_token);
+  //       user.accessToken = hashed_refresh_token;
+  //       await user.save();
+  //       return resJson({
+  //         message: 'OK',
+  //         data: [
+  //           {
+  //             role: user?.role?.slug_name,
+  //             access_token: await this.jwtService.signAsync(payload),
+  //             refresh_token,
+  //           },
+  //         ],
+  //       });
+  //     }
+  //     return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
+  //   }
+  //   return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
+  // }
 
   async register(paramsDto): Promise<User | any> {
     const user = await this.usersService.findOne(paramsDto.email);
@@ -91,101 +86,101 @@ export class AuthService {
   }
 
   // login
-  async login(signInDto: Login) {
-    const { email, password, type } = signInDto;
-    if (type === 'ADMIN') {
-      return await this.loginWithAdmin(email, password);
-    }
-    if (type === 'USER') {
-      return await this.loginWithUser(signInDto);
-    }
-    if (type === 'GOOGLE') {
-      return await this.loginGoogle(signInDto);
-    }
-  }
+  // async login(signInDto: Login) {
+  //   const { email, password, type } = signInDto;
+  //   if (type === 'ADMIN') {
+  //     return await this.loginWithAdmin(email, password);
+  //   }
+  //   if (type === 'USER') {
+  //     return await this.loginWithUser(signInDto);
+  //   }
+  //   if (type === 'GOOGLE') {
+  //     return await this.loginGoogle(signInDto);
+  //   }
+  // }
 
   // login with admin
-  async loginWithAdmin(email: string, password: string) {
-    const user = await this.usersService.findOne(email);
-    console.log(user);
-    if (user) {
-      const match = bcrypt.compareSync(password, user?.password);
-      if (match) {
-        const payload = { sub: user?.id, email: user?.email };
-        const refresh_token = await genRefreshTokenWithTimestamp();
-        const hashed_refresh_token = await hashRefreshToken(refresh_token);
-        user.accessToken = hashed_refresh_token;
-        await user.save();
-        return resJson({
-          message: 'OK',
-          data: [
-            {
-              role: user?.role?.slug_name,
-              access_token: await this.jwtService.signAsync(payload),
-              refresh_token,
-            },
-          ],
-        });
-      }
-      return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
-    }
-    return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
-  }
+  // async loginWithAdmin(email: string, password: string) {
+  //   const user = await this.usersService.findOne(email);
+  //   console.log(user);
+  //   if (user) {
+  //     const match = bcrypt.compareSync(password, user?.password);
+  //     if (match) {
+  //       const payload = { sub: user?.id, email: user?.email };
+  //       const refresh_token = await genRefreshTokenWithTimestamp();
+  //       const hashed_refresh_token = await hashRefreshToken(refresh_token);
+  //       user.accessToken = hashed_refresh_token;
+  //       await user.save();
+  //       return resJson({
+  //         message: 'OK',
+  //         data: [
+  //           {
+  //             role: user?.role?.slug_name,
+  //             access_token: await this.jwtService.signAsync(payload),
+  //             refresh_token,
+  //           },
+  //         ],
+  //       });
+  //     }
+  //     return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
+  //   }
+  //   return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
+  // }
 
   // login with user
-  async loginWithUser(signInDto: any) {
-    const { type, email, password, device_name, device_id, platform, ip_address, login_at } =
-      signInDto;
-    const data = {
-      email: email,
-      password: password,
-      type,
-    };
+  // async loginWithUser(signInDto: any) {
+  //   const { type, email, password, device_name, device_id, platform, ip_address, login_at } =
+  //     signInDto;
+  //   const data = {
+  //     email: email,
+  //     password: password,
+  //     type,
+  //   };
 
-    const token = '';
-    const path = '/auth/login';
-    const method = 'POST';
-    const response = await customAxios(method, path, token, data);
-    console.log('response----------', response);
+  //   const token = '';
+  //   const path = '/auth/login';
+  //   const method = 'POST';
+  //   const response = await customAxios(method, path, token, data);
+  //   console.log('response----------', response);
 
-    if (response.success === false)
-      return resJson({
-        message: response.message,
-        status: 402,
-      });
-    if (response && response.data) {
-      const token = response.data[0].access_token;
-      if (token) {
-        const user = await this.usersService.getProfileUser(token);
-        console.log('user------------------', user);
-        const user_id = user.id;
-        const userData = await this.usersService.findOne(user.email);
-        if (!userData) {
-          await this.usersService.createUser(user?.email, user?.avatar, user?.name, user_id);
-        }
-        //create device user
-        const dtoCreateDevice = {
-          device_name,
-          device_id,
-          platform,
-          ip_address,
-          login_at,
-          user_id,
-        };
-        const checkDevice = await this.devicesService.checkDevice(dtoCreateDevice);
+  //   if (response.success === false)
+  //     return resJson({
+  //       message: response.message,
+  //       status: 402,
+  //     });
+  //   if (response && response.data) {
+  //     const token = response.data[0].access_token;
+  //     if (token) {
+  //       const user = await this.usersService.getProfileUser(token);
+  //       console.log('user------------------', user);
+  //       const user_id = user.id;
+  //       const userData = await this.usersService.findOne(user.email);
+  //       if (!userData) {
+  //         await this.usersService.createUser(user?.email, user?.avatar, user?.name, user_id);
+  //       }
+  //       //create device user
+  //       const dtoCreateDevice = {
+  //         device_name,
+  //         device_id,
+  //         platform,
+  //         ip_address,
+  //         login_at,
+  //         user_id,
+  //       };
+  //       const checkDevice = await this.devicesService.checkDevice(dtoCreateDevice);
 
-        if (checkDevice === true) {
-          return resJson({
-            data: [{ access_token: token }, user.email_verified_at],
-            message: 'login success',
-            status: 200,
-          });
-        }
-        return resJson({ message: 'fail device', status: 401 });
-      }
-    }
-    return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
-  }
+  //       if (checkDevice === true) {
+  //         return resJson({
+  //           data: [{ access_token: token }, user.email_verified_at],
+  //           message: 'login success',
+  //           status: 200,
+  //         });
+  //       }
+  //       return resJson({ message: 'fail device', status: 401 });
+  //     }
+  //   }
+  //   return resJson({ message: 'Email or password invalid', status: 401 }); // throw new UnauthorizedException();
+  // }
 
   // Login With google
   async loginGoogle(loginDto: any) {
@@ -200,34 +195,34 @@ export class AuthService {
     const response = await customAxios(method, path, token, loginDto);
     //console.log('-------Login Google--------', response);
 
-    if (response && response?.success === true) {
-      const access_token = response.data[0].access_token;
-      const user = await this.usersService.getProfileUser(access_token);
-      console.log('user------------------', user);
-      const user_id = user.id;
-      const userData = await this.usersService.findOne(user.email);
-      if (!userData) {
-        await this.usersService.createUser(user?.email, user?.avatar, user?.name, user_id);
-      }
-      //create device user
-      const dtoCreateDevice = {
-        device_name,
-        device_id,
-        platform,
-        ip_address,
-        login_at,
-        user_id,
-      };
-      const checkDevice = await this.devicesService.checkDevice(dtoCreateDevice);
-      if (checkDevice === true) {
-        return resJson({
-          data: [response?.data[0]],
-          message: 'Login Google successfully',
-          status: 200,
-        });
-      }
-    }
-    return resJson({ message: 'Login Google please try again', status: 401 }); // throw new UnauthorizedException();
+    // if (response && response?.success === true) {
+    //   const access_token = response.data[0].access_token;
+    //   const user = await this.usersService.getProfileUser(access_token);
+    //   console.log('user------------------', user);
+    //   const user_id = user.id;
+    //   const userData = await this.usersService.findOne(user.email);
+    //   if (!userData) {
+    //     await this.usersService.createUser(user?.email, user?.avatar, user?.name, user_id);
+    //   }
+    //   //create device user
+    //   const dtoCreateDevice = {
+    //     device_name,
+    //     device_id,
+    //     platform,
+    //     ip_address,
+    //     login_at,
+    //     user_id,
+    //   };
+    //   const checkDevice = await this.devicesService.checkDevice(dtoCreateDevice);
+    //   if (checkDevice === true) {
+    //     return resJson({
+    //       data: [response?.data[0]],
+    //       message: 'Login Google successfully',
+    //       status: 200,
+    //     });
+    //   }
+    // }
+    // return resJson({ message: 'Login Google please try again', status: 401 }); // throw new UnauthorizedException();
   }
 
   // register user client

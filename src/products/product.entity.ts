@@ -9,22 +9,20 @@ export class Product extends Model {
   @Column
   id: number;
 
-  //@Default(new Date())
   @Column
   created_at: Date;
 
-  //@Default(new Date())
   @Column
   updated_at: Date;
 
   @Column
-  title: string;
+  name: string;
 
   @Column
   content: string;
 
   @Column
-  publishedDate: Date;
+  images: string;
 
   @Column
   thumbnail: string;
@@ -32,7 +30,7 @@ export class Product extends Model {
   @Column
   description: string;
 
-  @Default(false)
+  @Default(0)
   @Column
-  is_delete: boolean;
+  is_delete: number;
 }

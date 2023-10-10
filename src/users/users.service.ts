@@ -115,31 +115,31 @@ export class UsersService {
   }
 
   // create user
-  async createUser(
-    email: string,
-    avatar: string,
-    name: string,
-    userId: string,
-  ): Promise<IUserResponse | any> {
-    const user = await this.usersRepository.findOne({ where: { email: email } });
-    const idUser = String(userId);
-    console.log('idUser--------', typeof idUser);
+  // async createUser(
+  //   email: string,
+  //   avatar: string,
+  //   name: string,
+  //   userId: string,
+  // ): Promise<IUserResponse | any> {
+  //   const user = await this.usersRepository.findOne({ where: { email: email } });
+  //   const idUser = String(userId);
+  //   console.log('idUser--------', typeof idUser);
 
-    if (!user) {
-      const newUser = new this.usersRepository();
-      newUser.userName = name || 'USER';
-      newUser.name = name || 'USER';
-      newUser.email = email;
-      newUser.role_id = 3;
-      newUser.userId = idUser;
-      newUser.avatar = avatar || '';
-      newUser.password = '';
-      newUser.accessToken = '';
-      newUser.fcm_token = '';
-      return await newUser.save();
-    }
-    return { message: 'This email has been registered!' };
-  }
+  //   if (!user) {
+  //     const newUser = new this.usersRepository();
+  //     newUser.userName = name || 'USER';
+  //     newUser.name = name || 'USER';
+  //     newUser.email = email;
+  //     newUser.role_id = 3;
+  //     newUser.userId = idUser;
+  //     newUser.avatar = avatar || '';
+  //     newUser.password = '';
+  //     newUser.accessToken = '';
+  //     newUser.fcm_token = '';
+  //     return await newUser.save();
+  //   }
+  //   return { message: 'This email has been registered!' };
+  // }
 
   // update Profile User
   async updateProfileUser(passcode: string, email: string): Promise<IUserResponse | any> {

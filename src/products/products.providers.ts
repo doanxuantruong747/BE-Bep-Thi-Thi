@@ -5,7 +5,7 @@ import { Product } from './product.entity';
 
 export const productProviders = [
   {
-    provide: DB.DATA_SOURCE,
+    provide: DB.PRODUCT_REPOSITORY,
     useValue: Product,
   },
 ];

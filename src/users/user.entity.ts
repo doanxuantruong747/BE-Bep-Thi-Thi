@@ -59,21 +59,11 @@ export class User extends Model {
   accessToken: string;
 
   @Column
-  pools_id: string;
-
-  @Column
   finger: string;
 
   @Column
   passcode: string;
 
   @Column
-  userId: string;
-
-  @ForeignKey(() => Role)
-  @Column
-  role_id: number;
-
-  @BelongsTo(() => Role, 'role_id')
-  role: Role;
+  role: string;
 }

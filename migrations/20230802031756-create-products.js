@@ -4,7 +4,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('news', {
+    await queryInterface.createTable('products', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -24,11 +24,14 @@ module.exports = {
       publishedDate: {
         type: Sequelize.DATE,
       },
-      title: {
+      name: {
         type: Sequelize.STRING,
       },
       content: {
         type: Sequelize.TEXT,
+      },
+      images: {
+        type: Sequelize.TEXT('long'),
       },
       thumbnail: {
         type: Sequelize.STRING,
@@ -37,13 +40,13 @@ module.exports = {
         type: Sequelize.TEXT('long'),
       },
       is_delete: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
         allowNull: false,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('news');
+    await queryInterface.dropTable('products');
   },
 };

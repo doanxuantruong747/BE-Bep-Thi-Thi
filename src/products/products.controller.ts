@@ -15,33 +15,33 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { generateFilename, parsePaginate } from 'utils/libs';
-import { NewsService } from './products.service';
+import { ProductService } from './products.service';
 import { Public } from 'decorators/public.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiBearerAuth()
 @ApiTags('News')
 @Controller('news')
-export class NewsController {
-  constructor(private newsService: NewsService) {}
+export class ProductController {
+  constructor(private productService: ProductService) {}
 
   // create a news
-  @HttpCode(HttpStatus.OK)
-  @Post('create')
-  @UseInterceptors(
-    FileInterceptor('thumbnail', {
-      storage: diskStorage({
-        destination: './public/images/',
-        filename: (req, file, cb) => generateFilename(req, file, cb),
-      }),
-    }),
-  )
-  async createNews(@UploadedFile() thumbnail, @Body() body: any) {
-    console.log('[file--]', thumbnail, body);
-    if (thumbnail?.['filename']) {
-      body.thumbnail = thumbnail['filename'];
-    }
-    return this.newsService.createNews(body);
-  }
+  // @HttpCode(HttpStatus.OK)
+  // @Post('create')
+  // @UseInterceptors(
+  //   FileInterceptor('thumbnail', {
+  //     storage: diskStorage({
+  //       destination: './public/images/',
+  //       filename: (req, file, cb) => generateFilename(req, file, cb),
+  //     }),
+  //   }),
+  // )
+  // async createNews(@UploadedFile() thumbnail, @Body() body: any) {
+  //   console.log('[file--]', thumbnail, body);
+  //   if (thumbnail?.['filename']) {
+  //     body.thumbnail = thumbnail['filename'];
+  //   }
+  //   return this.productService.createNews(body);
+  // }
 
   // upload images
   @HttpCode(HttpStatus.OK)
@@ -67,7 +67,7 @@ export class NewsController {
     console.log('paramsDto', paramsDto);
     const { offset, limit, search, page } = parsePaginate(paramsDto);
     try {
-      return this.newsService.findAll({ offset, limit, search, page });
+      return this.productService.findAll({ offset, limit, search, page });
     } catch (error) {
       console.log('----error get all News --- ', error);
     }
@@ -80,41 +80,41 @@ export class NewsController {
     console.log('paramsDto', paramsDto);
     const { id } = parsePaginate(paramsDto);
     try {
-      return this.newsService.singleNews({ id });
+      return this.productService.singleNews({ id });
     } catch (error) {
       console.log('----error get single News --- ', error);
     }
   }
 
   // Update News
-  @HttpCode(HttpStatus.OK)
-  @Post('update')
-  @UseInterceptors(
-    FileInterceptor('thumbnail', {
-      storage: diskStorage({
-        destination: './public/images/',
-        filename: (req, file, cb) => generateFilename(req, file, cb),
-      }),
-    }),
-  )
-  async updateNews(@UploadedFile() thumbnail, @Body() body: any) {
-    console.log('[file--]', thumbnail, body);
-    if (thumbnail?.['filename']) {
-      body.thumbnail = thumbnail['filename'];
-    }
-    return this.newsService.updateNews(body);
-  }
+  // @HttpCode(HttpStatus.OK)
+  // @Post('update')
+  // @UseInterceptors(
+  //   FileInterceptor('thumbnail', {
+  //     storage: diskStorage({
+  //       destination: './public/images/',
+  //       filename: (req, file, cb) => generateFilename(req, file, cb),
+  //     }),
+  //   }),
+  // )
+  // async updateNews(@UploadedFile() thumbnail, @Body() body: any) {
+  //   console.log('[file--]', thumbnail, body);
+  //   if (thumbnail?.['filename']) {
+  //     body.thumbnail = thumbnail['filename'];
+  //   }
+  //   return this.productService.updateNews(body);
+  // }
 
   // Remove News
-  @HttpCode(HttpStatus.OK)
-  @Delete('')
-  remove(@Query() paramsDto: Record<string, any>) {
-    console.log('----------paramsDto----------', paramsDto);
-    const { id } = parsePaginate(paramsDto);
-    try {
-      return this.newsService.remove({ id });
-    } catch (error) {
-      console.log('-----error remove-----', error);
-    }
-  }
+  // @HttpCode(HttpStatus.OK)
+  // @Delete('')
+  // remove(@Query() paramsDto: Record<string, any>) {
+  //   console.log('----------paramsDto----------', paramsDto);
+  //   const { id } = parsePaginate(paramsDto);
+  //   try {
+  //     return this.productService.remove({ id });
+  //   } catch (error) {
+  //     console.log('-----error remove-----', error);
+  //   }
+  // }
 }

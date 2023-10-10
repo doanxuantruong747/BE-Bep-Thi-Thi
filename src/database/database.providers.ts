@@ -1,14 +1,10 @@
 /** @format */
 
 import 'dotenv/config';
-import { Event } from 'events/event.entity';
-import { News } from 'products/product.entity';
-import { Role } from 'roles/roles.entity';
+
+import { Product } from 'products/product.entity';
 import { Sequelize } from 'sequelize-typescript';
-import { Setting } from 'settings/setting.entity';
 import { User } from 'users/user.entity';
-import { Device } from 'devices/device.entity';
-import { Banner } from 'banner/banner.entity';
 
 export const databaseProviders = [
   {
@@ -25,7 +21,7 @@ export const databaseProviders = [
           timestamps: false,
         },
       });
-      sequelize.addModels([User, Role, News, Event, Setting, Device, Banner]);
+      sequelize.addModels([User, Product]);
       await sequelize.sync();
       return sequelize;
     },

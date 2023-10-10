@@ -40,9 +40,6 @@ module.exports = {
       active_code: {
         type: Sequelize.STRING,
       },
-      pools_id: {
-        type: Sequelize.STRING,
-      },
       passcode: {
         type: Sequelize.STRING,
       },
@@ -58,17 +55,13 @@ module.exports = {
       accessToken: {
         type: Sequelize.STRING,
       },
-      userId: {
-        type: Sequelize.STRING,
-      },
       is_delete: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
         allowNull: false,
       },
-      role_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+      role: {
+        type: Sequelize.STRING,
       },
     });
   },
