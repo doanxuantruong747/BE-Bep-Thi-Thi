@@ -44,7 +44,7 @@ export interface updateProfile {
 
 export interface craeteUser {
   email: string;
-  avatar: string;
+  avatar?: string;
   name: string;
-  userId: string;
+  password: string;
 }

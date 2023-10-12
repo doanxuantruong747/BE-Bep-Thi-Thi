@@ -8,6 +8,7 @@ import { IUserResponse } from 'types';
 import { DB } from 'utils/constants';
 import { customAxios, resJson } from 'utils/libs';
 import { User } from './user.entity';
+import { RoleUser } from 'types/role';
 
 // This should be a real class/interface representing a user entity
 @Injectable()
@@ -34,18 +35,8 @@ export class UsersService {
 
   async findOne(email: string): Promise<User | undefined> {
     return await this.usersRepository.findOne({
-      attributes: ['id', 'email', 'password'],
-      include: Role,
-      where: {
-        [Op.or]: [
-          { email },
-          // {
-          //   username: {
-          //     [Op.eq]: email,
-          //   },
-          // },
-        ],
-      },
+      attributes: ['id', 'email', 'password', 'role'],
+      where: { email },
     });
   }
 
@@ -55,17 +46,17 @@ export class UsersService {
     });
   }
 
-  async create({ email, password, name, role_id }): Promise<IUserResponse> {
-    const roleid = Number(role_id);
-    if (isNaN(roleid)) return resJson({ message: 'Role missed!', status: 401 });
+  async create({ email, password, name }): Promise<IUserResponse> {
     const newUser = {
       email,
       password,
       name,
-      role_id: roleid,
+      role: RoleUser.USER,
+      created_at: new Date(),
+      updated_at: new Date(),
     };
     const user = await this.usersRepository.create(newUser);
-    return resJson({ status: !!user ? 200 : 400, data: [user] });
+    return resJson({ data: [user] });
   }
 
   async profile(email: string): Promise<User | any> {

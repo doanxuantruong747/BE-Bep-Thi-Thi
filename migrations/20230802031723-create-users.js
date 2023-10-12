@@ -56,8 +56,8 @@ module.exports = {
         type: Sequelize.STRING,
       },
       is_delete: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
         allowNull: false,
       },
       role: {

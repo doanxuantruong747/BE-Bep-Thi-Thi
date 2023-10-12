@@ -66,4 +66,7 @@ export class User extends Model {
 
   @Column
   role: string;
+
+  @Column
+  is_delete: number;
 }

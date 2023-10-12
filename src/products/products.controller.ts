@@ -10,38 +10,39 @@ import {
   Post,
   Query,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { generateFilename, parsePaginate } from 'utils/libs';
+import { generateFilename, parsePaginate, resJson } from 'utils/libs';
 import { ProductService } from './products.service';
 import { Public } from 'decorators/public.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiBearerAuth()
-@ApiTags('News')
-@Controller('news')
+@ApiTags('Product')
+@Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
 
-  // create a news
-  // @HttpCode(HttpStatus.OK)
-  // @Post('create')
-  // @UseInterceptors(
-  //   FileInterceptor('thumbnail', {
-  //     storage: diskStorage({
-  //       destination: './public/images/',
-  //       filename: (req, file, cb) => generateFilename(req, file, cb),
-  //     }),
-  //   }),
-  // )
-  // async createNews(@UploadedFile() thumbnail, @Body() body: any) {
-  //   console.log('[file--]', thumbnail, body);
-  //   if (thumbnail?.['filename']) {
-  //     body.thumbnail = thumbnail['filename'];
-  //   }
-  //   return this.productService.createNews(body);
-  // }
+  // create a products
+  @HttpCode(HttpStatus.OK)
+  @Post('create')
+  @UseInterceptors(
+    FilesInterceptor('images', 5, {
+      storage: diskStorage({
+        destination: './public/images/',
+        filename: (req, file, cb) => generateFilename(req, file, cb),
+      }),
+    }),
+  )
+  async createNews(@UploadedFiles() images, @Body() body: any) {
+    try {
+      return this.productService.createProduct(images, body);
+    } catch (error) {
+      return resJson({ message: error.message });
+    }
+  }
 
   // upload images
   @HttpCode(HttpStatus.OK)
@@ -60,7 +61,6 @@ export class ProductController {
   }
 
   // get all
-  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('all')
   findAll(@Query() paramsDto: Record<string, any>) {
@@ -76,45 +76,45 @@ export class ProductController {
   // get single news item
   @HttpCode(HttpStatus.OK)
   @Get('')
-  singleNews(@Query() paramsDto: Record<string, any>) {
+  singleProduct(@Query() paramsDto: Record<string, any>) {
     console.log('paramsDto', paramsDto);
     const { id } = parsePaginate(paramsDto);
     try {
-      return this.productService.singleNews({ id });
+      return this.productService.singleProduct({ id });
     } catch (error) {
-      console.log('----error get single News --- ', error);
+      return resJson({ message: error.message });
     }
   }
 
-  // Update News
-  // @HttpCode(HttpStatus.OK)
-  // @Post('update')
-  // @UseInterceptors(
-  //   FileInterceptor('thumbnail', {
-  //     storage: diskStorage({
-  //       destination: './public/images/',
-  //       filename: (req, file, cb) => generateFilename(req, file, cb),
-  //     }),
-  //   }),
-  // )
-  // async updateNews(@UploadedFile() thumbnail, @Body() body: any) {
-  //   console.log('[file--]', thumbnail, body);
-  //   if (thumbnail?.['filename']) {
-  //     body.thumbnail = thumbnail['filename'];
-  //   }
-  //   return this.productService.updateNews(body);
-  // }
+  //Update Product
+  @HttpCode(HttpStatus.OK)
+  @Post('update')
+  @UseInterceptors(
+    FilesInterceptor('images', 10, {
+      storage: diskStorage({
+        destination: './public/images/',
+        filename: (req, file, cb) => generateFilename(req, file, cb),
+      }),
+    }),
+  )
+  async updateProduct(@UploadedFiles() images, @Body() body: any) {
+    try {
+      return this.productService.updateProduct(images, body);
+    } catch (error) {
+      return resJson({ message: error.message });
+    }
+  }
 
-  // Remove News
-  // @HttpCode(HttpStatus.OK)
-  // @Delete('')
-  // remove(@Query() paramsDto: Record<string, any>) {
-  //   console.log('----------paramsDto----------', paramsDto);
-  //   const { id } = parsePaginate(paramsDto);
-  //   try {
-  //     return this.productService.remove({ id });
-  //   } catch (error) {
-  //     console.log('-----error remove-----', error);
-  //   }
-  // }
+  // Remove Product
+  @HttpCode(HttpStatus.OK)
+  @Delete('')
+  remove(@Query() paramsDto: Record<string, any>) {
+    console.log('----------paramsDto----------', paramsDto);
+    const { id } = parsePaginate(paramsDto);
+    try {
+      return this.productService.remove({ id });
+    } catch (error) {
+      return resJson({ message: error.message });
+    }
+  }
 }

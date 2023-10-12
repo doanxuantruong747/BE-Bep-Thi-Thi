@@ -30,7 +30,21 @@ export class Product extends Model {
   @Column
   description: string;
 
-  @Default(0)
+  @Column
+  category_id: number;
+
+  @Column
+  pirce: number;
+
+  @Column
+  pirce_sale: number;
+
+  @Column
+  unit: string;
+
+  @Column
+  amount: number;
+
   @Column
   is_delete: number;
 }

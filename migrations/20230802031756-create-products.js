@@ -21,9 +21,6 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-      publishedDate: {
-        type: Sequelize.DATE,
-      },
       name: {
         type: Sequelize.STRING,
       },
@@ -38,6 +35,21 @@ module.exports = {
       },
       description: {
         type: Sequelize.TEXT('long'),
+      },
+      category_id: {
+        type: Sequelize.INTEGER,
+      },
+      pirce: {
+        type: Sequelize.DOUBLE,
+      },
+      pirce_sale: {
+        type: Sequelize.DOUBLE,
+      },
+      unit: {
+        type: Sequelize.STRING,
+      },
+      amount: {
+        type: Sequelize.INTEGER,
       },
       is_delete: {
         type: Sequelize.INTEGER,
