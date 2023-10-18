@@ -13,8 +13,8 @@ import { AppServicesModule } from './app_services/app_services.module';
 import { AuthModule } from './auth/auth.module';
 import config from './config/configuration';
 import { DatabaseModule } from './database/database.module';
-import { RolesModule } from './roles/roles.module';
-
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 console.log('AppModule', process.cwd(), process.env.NODE_ENV);
 
 @Module({
@@ -38,13 +38,14 @@ console.log('AppModule', process.cwd(), process.env.NODE_ENV);
     // DevtoolsModule.register({
     //   http: process.env.NODE_ENV !== 'production',
     // }),
-    RolesModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/image/(.*)'],
     }),
     EventsSocketModule,
     AppServicesModule,
+    CartModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

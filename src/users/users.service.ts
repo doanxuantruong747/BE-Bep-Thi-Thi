@@ -2,7 +2,6 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { unlink } from 'fs';
-import { Role } from 'roles/roles.entity';
 import { Op } from 'sequelize';
 import { IUserResponse } from 'types';
 import { DB } from 'utils/constants';
@@ -20,13 +19,7 @@ export class UsersService {
 
   async findAll({ offset, limit = 10 }): Promise<IUserResponse> {
     const users = await this.usersRepository.findAndCountAll({
-      attributes: ['id', 'name', 'email', 'role_id'],
-      include: [
-        {
-          attributes: ['slug_name'],
-          model: Role,
-        },
-      ],
+      attributes: ['id', 'name', 'email', 'role'],
       offset,
       limit,
     });
@@ -47,6 +40,19 @@ export class UsersService {
   }
 
   async create({ email, password, name }): Promise<IUserResponse> {
+    const newUser = {
+      email,
+      password,
+      name,
+      role: RoleUser.ADMIN,
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+    const user = await this.usersRepository.create(newUser);
+    return resJson({ data: [user] });
+  }
+
+  async createUser({ email, password, name }): Promise<IUserResponse> {
     const newUser = {
       email,
       password,

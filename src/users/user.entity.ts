@@ -1,16 +1,6 @@
 /** @format */
 
-import { Role } from 'roles/roles.entity';
-import {
-  Table,
-  Column,
-  Model,
-  PrimaryKey,
-  AutoIncrement,
-  ForeignKey,
-  BelongsTo,
-  Default,
-} from 'sequelize-typescript';
+import { AutoIncrement, Column, Default, Model, PrimaryKey, Table } from 'sequelize-typescript';
 
 @Table({ tableName: 'users' })
 export class User extends Model {
@@ -18,6 +8,9 @@ export class User extends Model {
   @AutoIncrement
   @Column
   id: number;
+
+  @Column
+  _id_user: string;
 
   @Column
   userName: string;

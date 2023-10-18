@@ -1,7 +1,5 @@
 /** @format */
 
-/** @format */
-
 import { Inject, Injectable } from '@nestjs/common';
 import { Op } from 'sequelize';
 import { IUserResponse } from 'types';
@@ -9,7 +7,6 @@ import { DB } from 'utils/constants';
 import { resJson } from 'utils/libs';
 import { Product } from './product.entity';
 
-// This should be a real class/interface representing a user entity
 @Injectable()
 export class ProductService {
   constructor(

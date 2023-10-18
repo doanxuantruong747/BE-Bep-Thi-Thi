@@ -11,6 +11,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      _id_user: {
+        type: Sequelize.STRING,
+        defaultValue:null,
+        allowNull: true,
+      },
       username: {
         type: Sequelize.STRING,
       },
@@ -66,7 +71,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('ADMIN');
   },
 };
 

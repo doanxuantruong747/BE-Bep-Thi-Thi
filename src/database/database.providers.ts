@@ -1,6 +1,8 @@
 /** @format */
 
+import { Cart } from 'cart/cart.entity';
 import 'dotenv/config';
+import { Order } from 'order/order.entity';
 
 import { Product } from 'products/product.entity';
 import { Sequelize } from 'sequelize-typescript';
@@ -21,7 +23,7 @@ export const databaseProviders = [
           timestamps: false,
         },
       });
-      sequelize.addModels([User, Product]);
+      sequelize.addModels([User, Product, Cart, Order]);
       await sequelize.sync();
       return sequelize;
     },

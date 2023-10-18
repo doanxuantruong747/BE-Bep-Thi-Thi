@@ -62,7 +62,7 @@ export class AuthService {
   // login
   async login(signInDto: Login) {
     const { type } = signInDto;
-    if (type === 'USER') {
+    if (type === 'ADMIN') {
       return await this.loginWithUser(signInDto);
     }
   }
@@ -71,7 +71,7 @@ export class AuthService {
   async loginWithUser(loginDto: LoginDto) {
     const { email, password } = loginDto;
     const user = await this.usersService.findOne(email);
-    if (user && user.role === 'USER') {
+    if (user && user.role === 'ADMIN') {
       const match = bcrypt.compareSync(password, user?.password);
       if (match) {
         const payload = { sub: user?.id, email: user?.email };
