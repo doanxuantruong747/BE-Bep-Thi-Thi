@@ -27,17 +27,11 @@ console.log('AppModule', process.cwd(), process.env.NODE_ENV);
     ProductModule,
     DatabaseModule,
     AuthModule,
-    // MulterModule.registerAsync({
-    //   useFactory: () => ({
-    //     dest: './upload',
-    //   }),
-    // }),
+
     MulterModule.register({
       dest: './public/images/',
     }),
-    // DevtoolsModule.register({
-    //   http: process.env.NODE_ENV !== 'production',
-    // }),
+
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/image/(.*)'],

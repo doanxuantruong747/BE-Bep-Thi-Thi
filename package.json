@@ -1,5 +1,5 @@
 {
-  "name": "pools-dashboard-api",
+  "name": "bepthithi",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -11,9 +11,9 @@
     "start": "yarn && env-cmd -f .local.env nest start",
     "start:dev": "yarn migrate && env-cmd -f .local.env nest start --watch",
     "start:debug": "env-cmd -f .local.env nest start --debug --watch",
-    "build:staging": "env-cmd -f .staging.env && tsc -p tsconfig.build.json && cross-env NODE_ENV=staging yarn start --name dist/main.js --name dashboard_build",
+    "build:staging": "env-cmd -f .staging.env && tsc -p tsconfig.build.json && cross-env NODE_ENV=staging yarn start --name dist/main.js --name bepthithi_build",
     "migrate": "npx sequelize-cli db:migrate",
-    "renew:staging": "yarn migrate && yarn && env-cmd -f .staging.env nest build && cross-env NODE_ENV=staging pm2 restart dashboard_build",
+    "renew:staging": "yarn migrate && yarn && env-cmd -f .staging.env nest build && cross-env NODE_ENV=staging restart bepthithi_build",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
