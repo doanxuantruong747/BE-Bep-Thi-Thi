@@ -61,6 +61,7 @@ export class ProductController {
   }
 
   // get all
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('all')
   findAll(@Query() paramsDto: Record<string, any>) {
@@ -74,6 +75,7 @@ export class ProductController {
   }
 
   // get single news item
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('')
   singleProduct(@Query() paramsDto: Record<string, any>) {
